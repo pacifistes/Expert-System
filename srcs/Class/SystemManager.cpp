@@ -110,7 +110,7 @@ void	SystemManager::addInitialFactsToGraph(std::string const &initialFacts) {
 		if (this->_mapFact.find(charFact) == this->_mapFact.end()) {
 			this->_mapFact[charFact] = new Fact(charFact);
 		}
-		this->_mapFact[charFact]->setStatus(True, false);
+		this->_mapFact[charFact]->setStatus(True);
 		this->_display->tableVerite[charFact - 'A'] = true; //TOCHECK
 	}
 }

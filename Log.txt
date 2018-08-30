@@ -2,5 +2,28 @@ Start of resolution:
 
 I search the value of the fact D:
 I am looking for all the rules whose conditions are not yet valid for the fact D
+I check the rule A+B+C => D
+I search the value of the fact A:
+There are no rules but the fact A is initialize to true
+I am looking for all the rules whose conditions are not yet valid for the fact A
+I search the value of the fact B:
+There are no rules but the fact B is initialize to true
+I am looking for all the rules whose conditions are not yet valid for the fact B
+I search the value of the fact C:
+There are no rules but the fact C is initialize to true
+I am looking for all the rules whose conditions are not yet valid for the fact C
+The condition of the rule A+B+C => D is valid, so I apply the conclusion
+The fact D is set to true
+I look if the realized change activates new rules for the fact D
+I am looking for all the rules whose conditions are not yet valid for the fact D
+I look if the realized change activates new rules for the fact A
+There are no rules but the fact A is initialize to true
+I am looking for all the rules whose conditions are not yet valid for the fact A
+I look if the realized change activates new rules for the fact B
+There are no rules but the fact B is initialize to true
+I am looking for all the rules whose conditions are not yet valid for the fact B
+I look if the realized change activates new rules for the fact C
+There are no rules but the fact C is initialize to true
+I am looking for all the rules whose conditions are not yet valid for the fact C
 D
 The fact D is true

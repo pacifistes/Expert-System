@@ -144,7 +144,7 @@ void Display::displayFacts(struct nk_context *ctx)
 					_manager->_mapFact[i * 5 + j + 'A']->setStatus(
 						tableVerite[i * 5 + j] == true ? 
 						True :
-						False,
+						FalseDefault,
 						true
 					);
 
@@ -175,24 +175,8 @@ void Display::displayActiveRules(struct nk_context *ctx)
 		{
 			nk_layout_row_dynamic(ctx, 20, 2);
 			nk_label_colored(ctx, activeRules[i].c_str(), NK_TEXT_LEFT, nk_rgb(255, 255, 255));
-			if (nk_button_label(ctx, "Disable"))
-			{
-				inactiveRules.push_back(activeRules[i]);
-				activeRules.erase(activeRules.begin() + i);
-			}
 		}
 		nk_layout_row_dynamic(ctx, 20, 1);
-		nk_label_colored(ctx, "Disabled Rules", NK_TEXT_LEFT, nk_rgb(255, 0, 0));
-		for (size_t i = 0; i < inactiveRules.size(); i++)
-		{
-			nk_layout_row_dynamic(ctx, 20, 2);
-			nk_label_colored(ctx, inactiveRules[i].c_str(), NK_TEXT_LEFT, nk_rgb(255, 255, 255));
-			if (nk_button_label(ctx, "Enable"))
-			{
-				activeRules.push_back(inactiveRules[i]);
-				inactiveRules.erase(inactiveRules.begin() + i);
-			}
-		}
 	}
 }
 
@@ -295,12 +279,6 @@ void Display::init()
 	bg.r = 0.10f, bg.g = 0.18f, bg.b = 0.24f, bg.a = 1.0f;
 	for (size_t i = 0; i < 26; i++)
 		initialFactsState[i] = tableVerite[i];
-	// _manager->setUndefinedConclusions("A", "!A");
-	// _manager->setUndefinedConclusions("B", "!B");
-	// _manager->setUndefinedConclusions("C", "!C");
-	// _manager->setUndefinedConclusions("D", "!D");
-	// _manager->setUndefinedConclusions("E", "!E");
-	std::cout << "undefinedsolved = " << this->undefinedSolved << '\n';
 	while (_running)
 	{
 		this->update(ctx, &bg);
