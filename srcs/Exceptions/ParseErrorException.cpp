@@ -13,7 +13,7 @@ ParseErrorException::~ParseErrorException() throw() {
 }
 
 const char *ParseErrorException::what() const throw() {
-	if (this->_step == InitialFacts)
+	if (this->_step == InitialFacts || this->_step == Rules)
 		return "ParseErrorException: the line should be a rule or an Initial facts";
 	return "ParseErrorException: the line should be a query";
 }

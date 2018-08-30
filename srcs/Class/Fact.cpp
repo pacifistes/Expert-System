@@ -119,39 +119,44 @@ EFactStatus Fact::getStatusByBackwardChaining(std::string factAlreadyPass) {
 		return this->_status;
 	}
 	factAlreadyPass += this->_name;
-	if (this->_rules.size() == 0 && this->_status == True) {
-		Logger::log(std::ostringstream() << "There are no rules but the fact " << this->_name
-		<< " is initialize to " << Color::mapColor[EColor::Green] << True << Color::mapColor[EColor::EndOfColor] );
-	}
-	Logger::log(std::ostringstream() << "I am looking for all the rules whose conditions are not yet valid for the fact " << this->_name);
-	for (auto& rule : this->_rules) {
-		if (rule->isConditionValid() == true) {
-			continue;
+	if (this->_rules.size() == 0) {
+		if (this->_status == True) {
+			Logger::log(std::ostringstream() << "There are no rules but the fact " << this->_name
+			<< " is initialize to " << Color::mapColor[EColor::Green] << True << Color::mapColor[EColor::EndOfColor] );
 		}
-		std::string stringRule = rule->getRule();
-		Logger::log(std::ostringstream() << "I check the rule " << stringRule);
-		if (this->isConditionValid(rule, factAlreadyPass)) {
-			rule->setConditionValidation(true);
-			Logger::log(std::ostringstream() << "The condition of the rule " << stringRule << " is valid, so I apply the conclusion");
-			this->applyConclusion(rule->getConclusion());
-			for (char & charConclusion : rule->getConclusion()) {
-				if (std::isupper(charConclusion) && factsToCheck.find(charConclusion) == std::string::npos) {
-					factsToCheck += charConclusion;
+	}
+	else {
+		Logger::log(std::ostringstream() << "I am looking for all the rules whose conditions are not yet valid for the fact " << this->_name);
+		for (auto& rule : this->_rules) {
+			if (rule->isConditionValid() == true) {
+				continue;
+			}
+			std::string stringRule = rule->getRule();
+			Logger::log(std::ostringstream() << "I check the rule " << stringRule);
+			if (this->isConditionValid(rule, factAlreadyPass)) {
+				rule->setConditionValidation(true);
+				Logger::log(std::ostringstream() << "The condition of the rule " << stringRule << " is valid, so I apply the conclusion");
+				this->applyConclusion(rule->getConclusion());
+				for (char & charConclusion : rule->getConclusion()) {
+					if (std::isupper(charConclusion) && factsToCheck.find(charConclusion) == std::string::npos) {
+						factsToCheck += charConclusion;
+					}
+				}
+				for (char & charCondition : rule->getCondition()) {
+					if (std::isupper(charCondition) && factsToCheck.find(charCondition) == std::string::npos) {
+						factsToCheck += charCondition;
+					}
 				}
 			}
-			for (char & charCondition : rule->getCondition()) {
-				if (std::isupper(charCondition) && factsToCheck.find(charCondition) == std::string::npos) {
-					factsToCheck += charCondition;
-				}
+			else {
+				Logger::log(std::ostringstream() << "The condition of the rule " << stringRule << " isn't valid");
 			}
 		}
-		else {
-			Logger::log(std::ostringstream() << "The condition of the rule " << stringRule << " isn't valid");
+		for (char& factToCheck : factsToCheck) {
+			Logger::log(std::ostringstream() << "I look if the realized change activates new rules for the fact " << factToCheck);
+			this->_mapFact[factToCheck]->getStatusByBackwardChaining();
 		}
 	}
-	for (char& factToCheck : factsToCheck) {
-		Logger::log(std::ostringstream() << "I look if the realized change activates new rules for the fact " << factToCheck);
-		this->_mapFact[factToCheck]->getStatusByBackwardChaining();
-	}
+	Logger::log(std::ostringstream() << "The fact " << this->_name << " is actually " << this->_status);
 	return this->_status;
 }

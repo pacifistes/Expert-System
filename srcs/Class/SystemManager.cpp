@@ -45,7 +45,7 @@ void SystemManager::parseLine(std::string const &line) {
 	}
 	if (!std::regex_search(line.c_str(), this->_match, std::regex(SystemManager::_mapRegex[this->_step]))
 		|| (this->_step == Rules && (!this->isValidInfixNotation(this->_match[1]) || !this->isValidInfixNotation(this->_match[2])))) {
-			throw ParseErrorException(this->_step++);
+			throw ParseErrorException(this->_step);
 	}
 	if (_step == Rules)
 		_display->activeRules.push_back(line);
@@ -186,28 +186,27 @@ void SystemManager::findQueries() {
 			}
 			catch (std::exception const & e) {//A Definir ce que l'on fait
 				Logger::log(std::ostringstream() << e.what());
-				std::exit(EXIT_FAILURE);
+				return;
 			}
 			Logger::log(std::ostringstream() << this->_mapFact[charFact]->getName());
-
-		Logger::log(std::ostringstream() << Color::mapColor[EColor::White] << "The fact " << charFact << " is " << Color::mapColor[EColor::EndOfColor] << status);
-		if (status == True) {
-			this->_display->tableVerite[charFact - 'A'] = true; //TOCHECK
-			resultPerChar << "The fact " << charFact << " is True";
-		}
-		else {
-			this->_display->tableVerite[charFact - 'A'] = false; //TOCHECK
-			resultPerChar << "The fact " << charFact << " is False";
-		}
-		_display->results.push_back(resultPerChar.str());
-		(void)status;
+			Logger::log(std::ostringstream() << Color::mapColor[EColor::White] << "The fact " << charFact << " is " << Color::mapColor[EColor::EndOfColor] << status);
+			if (status == True) {
+				this->_display->tableVerite[charFact - 'A'] = true; //TOCHECK
+				resultPerChar << "The fact " << charFact << " is True";
+			}
+			else {
+				this->_display->tableVerite[charFact - 'A'] = false; //TOCHECK
+				resultPerChar << "The fact " << charFact << " is False";
+			}
+			_display->results.push_back(resultPerChar.str());
+			(void)status;
 		}
 	}
 }
 
 SystemManager::mapRegex SystemManager::initMapRegex() {
 	SystemManager::mapRegex mapRegex = {
-		{Rules, "^((?:[\\s\\!]*\\(?[\\s\\!]*[A-Z]\\s*\\)?|\\+|\\||\\^|\\s)+)=>((?:\\s*\\(?[\\s\\!]*[A-Z]\\s*\\)?|\\+|\\s)+)(?:#.*)?$"},
+		{Rules, "^((?:[\\s\\!]*[\\(\\s]*[\\s\\!]*[A-Z][\\s\\)]*|\\+|\\||\\^|\\s)+)=>((?:[\\s\\(]*[\\s\\!]*[A-Z][\\s\\)]*|\\+|\\s)+)(?:#.*)?$"},
 		{InitialFacts, "^=([A-Z]*)?(?:\\s*#.*)?$"},
 		{Queries, "^\\?([A-Z]+)(?:\\s*#.*)?"}
 	};
