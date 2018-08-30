@@ -1,0 +1,6 @@
+Start of resolution:
+
+I search the value of the fact D:
+I am looking for all the rules whose conditions are not yet valid for the fact D
+D
+The fact D is true
