@@ -105,13 +105,21 @@ void	SystemManager::addRuleToGraph(Rule *rule) {
 	}
 }
 
+void	SystemManager::resetAllRules(void)
+{
+	for (auto fact : this->_mapFact)
+	{
+		fact.second->resetAllRules();
+	}
+}
+
 void	SystemManager::addInitialFactsToGraph(std::string const &initialFacts) {
 	for (const char & charFact : initialFacts) {
 		if (this->_mapFact.find(charFact) == this->_mapFact.end()) {
 			this->_mapFact[charFact] = new Fact(charFact);
 		}
 		this->_mapFact[charFact]->setStatus(True);
-		this->_display->tableVerite[charFact - 'A'] = true; //TOCHECK
+		this->_display->tableVerite[charFact - 'A'] = true;
 	}
 }
 
@@ -160,6 +168,7 @@ void SystemManager::findQueries() {
 	EFactStatus status;
 	Logger::clearLog();
 	Logger::log(std::ostringstream() << "Start of resolution:\n");
+	resetAllRules();
 	for (const char& charFact : this->_queries) {
 		std::stringstream resultPerChar;
 		_display->query += charFact;

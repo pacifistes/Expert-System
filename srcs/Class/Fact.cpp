@@ -30,6 +30,14 @@ void Fact::insertFact(char c, Fact *fact) {
 	this->_mapFact[c] = fact;
 }
 
+void Fact::resetAllRules()
+{
+	for (auto rule : _rules)
+	{
+		rule->setConditionValidation(false);
+	}
+}
+
 void Fact::setStatus(EFactStatus status, bool isPossibleToOverride) {
 	Logger::log(std::ostringstream() << "The fact " << this->_name << " is set to " << status);
 

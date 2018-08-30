@@ -23,6 +23,7 @@ class SystemManager {
 		void addInitialFactsToGraph(std::string const &initialFacts);
 		void setUndefinedConclusions(std::string s1, std::string s2);
 		std::map<char, Fact*> _mapFact;
+		void resetAllRules();
 
 	private: 
 		SystemManager();

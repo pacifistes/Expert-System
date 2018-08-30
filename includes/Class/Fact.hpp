@@ -20,6 +20,7 @@ class Fact {
 		void setStatus(EFactStatus status, bool isPossibleToOverride = false);
 		char getName();
 		EFactStatus getStatusByBackwardChaining(std::string factAlreadyPass = "");
+		void resetAllRules();
 	private:
 		Fact();
 		Fact(Fact const &fact);
